@@ -25,6 +25,7 @@ namespace Labb5
         }
         internal void Initialize()
         {
+            DefaultButtonState();
             updateMode = false;
 
             UserCollection = new ObservableCollection<UserModel>() { new UserModel("Wil", "WilMail"), new UserModel("Si", "SiMail") };
