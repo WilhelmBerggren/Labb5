@@ -19,6 +19,7 @@ namespace Labb5
         //private bool updateMode;
         public MainWindow()
         {
+            InitializeComponent();
             //InitializeComponent();
             //updateMode = false;
 

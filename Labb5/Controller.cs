@@ -27,6 +27,9 @@ namespace Labb5
         {
             updateMode = false;
 
+            UserCollection = new ObservableCollection<UserModel>() { new UserModel("Wil", "WilMail"), new UserModel("Si", "SiMail") };
+            AdminCollection = new ObservableCollection<UserModel>() { new UserModel("Admwil", "AdmWilMail"), new UserModel("Admsi", "AdmSiMail") };
+
             view.userSubmitButton.Click += OnUserSubmitButtonClicked;
             view.userUpdateButton.Click += OnUserUpdateButtonClicked;
             view.removeUserButton.Click += OnRemoveUserButtonClicked;
@@ -35,14 +38,14 @@ namespace Labb5
             OnSetButtonContent += ChangeButtonRankContentName;
             view.usernameTextBox.TextChanged += HandleTextBoxChange;
             view.emailTextBox.TextChanged += HandleTextBoxChange;
-
-
             view.userListBox.ItemsSource = UserCollection;
+            view.adminListBox.ItemsSource = AdminCollection;
+
+
             view.userListBox.GotFocus += OnListGotFocus;
             view.userListBox.SelectionChanged += OnListSelectionChanged;
             view.userListBox.DisplayMemberPath = "Name";
 
-            view.adminListBox.ItemsSource = view.AdminCollection;
             view.adminListBox.GotFocus += OnListGotFocus;
             view.adminListBox.SelectionChanged += OnListSelectionChanged;
             view.adminListBox.DisplayMemberPath = "Name";
@@ -54,9 +57,13 @@ namespace Labb5
             view.Show();
         }
 
+        public void UpdateView()
+        {
+        }
+
         public void OnUserSubmitButtonClicked(object sender, RoutedEventArgs e)
         {
-            view.UserCollection.Add(new UserModel(view.usernameTextBox.Text, view.emailTextBox.Text));
+            UserCollection.Add(new UserModel(view.usernameTextBox.Text, view.emailTextBox.Text));
 
             view.usernameTextBox.Text = "";
             view.emailTextBox.Text = "";
@@ -83,25 +90,25 @@ namespace Labb5
             var selectedList = view.userListBox.SelectedItem == null ? view.adminListBox : view.userListBox;
 
             if (selectedList == view.adminListBox)
-                view.AdminCollection.Remove(SelectedUser);
+                AdminCollection.Remove(SelectedUser);
             else
-                view.UserCollection.Remove(SelectedUser);
+                UserCollection.Remove(SelectedUser);
         }
 
         public void OnChangeRankButtonClick(object sender, RoutedEventArgs e)
         {
             if (view.changeRank.Content.ToString() == "Make User")
             {
-                view.UserCollection.Add(SelectedUser);
-                view.AdminCollection.Remove(SelectedUser);
+                UserCollection.Add(SelectedUser);
+                AdminCollection.Remove(SelectedUser);
 
                 DefaultButtonState();
             }
 
             else if (view.changeRank.Content.ToString() == "Make Admin")
             {
-                view.AdminCollection.Add(SelectedUser);
-                view.UserCollection.Remove(SelectedUser);
+                AdminCollection.Add(SelectedUser);
+                UserCollection.Remove(SelectedUser);
 
                 DefaultButtonState();
             }
@@ -182,7 +189,7 @@ namespace Labb5
                 }
             }
 
-            foreach (UserModel user in view.UserCollection)
+            foreach (UserModel user in UserCollection)
             {
                 if (view.usernameTextBox.Text == user.Name)
                 {
@@ -194,7 +201,7 @@ namespace Labb5
                 }
             }
 
-            foreach (UserModel user in view.AdminCollection)
+            foreach (UserModel user in AdminCollection)
             {
                 if (view.usernameTextBox.Text == user.Name)
                 {
