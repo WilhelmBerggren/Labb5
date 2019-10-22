@@ -13,5 +13,13 @@ namespace Labb5
     /// </summary>
     public partial class App : Application
     {
+        private void Application_Startup(object sender, StartupEventArgs e)
+        {
+            var view = new MainWindow();
+            var controller = new Controller(view);
+            controller.Initialize();
+            controller.Run();
+        }
     }
+
 }
