@@ -12,9 +12,9 @@ namespace Labb5
 
         internal MainWindow view { get; set; }
 
-        internal ObservableCollection<UserModel> UserCollection { get; set; }
-        internal ObservableCollection<UserModel> AdminCollection { get; set; }
-        internal UserModel SelectedUser { get; set; }
+        internal ObservableCollection<User> UserCollection { get; set; }
+        internal ObservableCollection<User> AdminCollection { get; set; }
+        internal User SelectedUser { get; set; }
         internal ListBox SelectedListBox { get; set; }
         internal bool updateMode;
 
@@ -28,20 +28,21 @@ namespace Labb5
             DefaultButtonState();
             updateMode = false;
 
-            UserCollection = new ObservableCollection<UserModel>() { new UserModel("Wil", "WilMail"), new UserModel("Si", "SiMail") };
-            AdminCollection = new ObservableCollection<UserModel>() { new UserModel("Admwil", "AdmWilMail"), new UserModel("Admsi", "AdmSiMail") };
+            UserCollection = new ObservableCollection<User>();
+            AdminCollection = new ObservableCollection<User>();
 
             view.userSubmitButton.Click += OnUserSubmitButtonClicked;
             view.userUpdateButton.Click += OnUserUpdateButtonClicked;
             view.removeUserButton.Click += OnRemoveUserButtonClicked;
             view.changeRank.Click += OnChangeRankButtonClick;
             view.editUserButton.Click += OnEditUserButtonClicked;
+
             OnSetButtonContent += ChangeButtonRankContentName;
+
             view.usernameTextBox.TextChanged += HandleTextBoxChange;
             view.emailTextBox.TextChanged += HandleTextBoxChange;
             view.userListBox.ItemsSource = UserCollection;
             view.adminListBox.ItemsSource = AdminCollection;
-
 
             view.userListBox.GotFocus += OnListGotFocus;
             view.userListBox.SelectionChanged += OnListSelectionChanged;
@@ -50,7 +51,6 @@ namespace Labb5
             view.adminListBox.GotFocus += OnListGotFocus;
             view.adminListBox.SelectionChanged += OnListSelectionChanged;
             view.adminListBox.DisplayMemberPath = "Name";
-
         }
 
         internal void Run()
@@ -58,13 +58,9 @@ namespace Labb5
             view.Show();
         }
 
-        public void UpdateView()
-        {
-        }
-
         public void OnUserSubmitButtonClicked(object sender, RoutedEventArgs e)
         {
-            UserCollection.Add(new UserModel(view.usernameTextBox.Text, view.emailTextBox.Text));
+            UserCollection.Add(new User(view.usernameTextBox.Text, view.emailTextBox.Text));
 
             view.usernameTextBox.Text = "";
             view.emailTextBox.Text = "";
@@ -139,7 +135,7 @@ namespace Labb5
         public void OnListSelectionChanged(object listbox, SelectionChangedEventArgs e)
         {
             SelectedListBox = (ListBox)listbox;
-            SelectedUser = (UserModel)SelectedListBox.SelectedItem;
+            SelectedUser = (User)SelectedListBox.SelectedItem;
 
             OnSetButtonContent();
             view.changeRank.IsEnabled = true;
@@ -190,7 +186,7 @@ namespace Labb5
                 }
             }
 
-            foreach (UserModel user in UserCollection)
+            foreach (User user in UserCollection)
             {
                 if (view.usernameTextBox.Text == user.Name)
                 {
@@ -202,7 +198,7 @@ namespace Labb5
                 }
             }
 
-            foreach (UserModel user in AdminCollection)
+            foreach (User user in AdminCollection)
             {
                 if (view.usernameTextBox.Text == user.Name)
                 {
